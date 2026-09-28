@@ -1,0 +1,7 @@
+{
+  "name": "DataOrbit",
+  "description": "Enterprise multi-source data intelligence and visualization platform connecting relational databases, CSV extracts, APIs, and document knowledge with agentic AI analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

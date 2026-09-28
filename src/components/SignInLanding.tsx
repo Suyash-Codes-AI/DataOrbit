@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, BarChart3, CheckCircle2, Database, Eye, EyeOff, KeyRound, LoaderCircle, Orbit, ShieldCheck, Sparkles } from 'lucide-react';
+import { SiteFooter } from './SiteFooter';
 
 interface SignInLandingProps {
   onSignIn: (email: string, password: string) => Promise<void>;
@@ -140,6 +141,7 @@ export const SignInLanding: React.FC<SignInLandingProps> = ({ onSignIn, onGuest,
           <p className="mt-5 text-center text-[11px] leading-5 text-slate-600">Protected by Netlify Identity. Guest sessions remain local to this browser.</p>
         </div>
       </section>
+      <SiteFooter />
     </main>
   );
 };

@@ -14,6 +14,8 @@ import { UserRole, DatabaseStats, QueryHistoryItem } from './types';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { SignInLanding } from './components/SignInLanding';
 import { AuthError, getUser, handleAuthCallback, login, logout, MissingIdentityError, requestPasswordRecovery, type User } from '@netlify/identity';
+import { OrbitAssistant } from './components/OrbitAssistant';
+import { SiteFooter } from './components/SiteFooter';
 
 function AppContent({ identityLabel, onSignOut }: { identityLabel: string; onSignOut: () => void }) {
   const { isDark } = useTheme();
@@ -161,7 +163,9 @@ function AppContent({ identityLabel, onSignOut }: { identityLabel: string; onSig
             />
           )}
         </main>
+        <SiteFooter dark={isDark} />
       </div>
+      <OrbitAssistant />
     </div>
   );
 }

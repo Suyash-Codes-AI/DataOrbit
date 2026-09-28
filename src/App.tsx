@@ -12,8 +12,10 @@ import { SavedQueriesView } from './views/SavedQueriesView';
 import { SettingsView } from './views/SettingsView';
 import { UserRole, DatabaseStats, QueryHistoryItem } from './types';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import { SignInLanding } from './components/SignInLanding';
+import { AuthError, getUser, handleAuthCallback, login, logout, MissingIdentityError, requestPasswordRecovery, type User } from '@netlify/identity';
 
-function AppContent() {
+function AppContent({ identityLabel, onSignOut }: { identityLabel: string; onSignOut: () => void }) {
   const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [userRole, setUserRole] = useState<UserRole>('data_analyst');
@@ -87,6 +89,8 @@ function AppContent() {
           setUserRole={setUserRole}
           geminiConfigured={geminiConfigured}
           onOpenAnalyst={() => setActiveTab('analyst')}
+          identityLabel={identityLabel}
+          onSignOut={onSignOut}
         />
 
         <main
@@ -163,9 +167,61 @@ function AppContent() {
 }
 
 export default function App() {
+  const [access, setAccess] = useState<{ mode: 'loading' | 'signed-in' | 'guest'; user?: User }>({ mode: 'loading' });
+  const [authError, setAuthError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    const restore = async () => {
+      try {
+        const callback = await handleAuthCallback();
+        const user = callback?.user ?? await getUser();
+        if (active) setAccess(user ? { mode: 'signed-in', user } : { mode: 'loading' });
+      } catch {
+        if (active) setAccess({ mode: 'loading' });
+      }
+    };
+    restore();
+    return () => { active = false; };
+  }, []);
+
+  const authMessage = (error: unknown) => {
+    if (error instanceof MissingIdentityError) return 'Sign-in is not available in this preview. You can continue as a guest.';
+    if (error instanceof AuthError && error.status === 401) return 'The email or password is incorrect.';
+    if (error instanceof AuthError) return error.message;
+    return 'Unable to sign in right now. Please try again.';
+  };
+
+  const signIn = async (email: string, password: string) => {
+    setAuthError('');
+    try {
+      const user = await login(email, password);
+      setAccess({ mode: 'signed-in', user });
+    } catch (error) {
+      setAuthError(authMessage(error));
+      throw error;
+    }
+  };
+
+  const recover = async (email: string) => {
+    setAuthError('');
+    try { await requestPasswordRecovery(email); }
+    catch (error) { setAuthError(authMessage(error)); throw error; }
+  };
+
+  const signOut = async () => {
+    if (access.mode === 'signed-in') await logout().catch(() => undefined);
+    setAuthError('');
+    setAccess({ mode: 'loading' });
+  };
+
   return (
     <ThemeProvider>
-      <AppContent />
+      {access.mode === 'loading' ? (
+        <SignInLanding onSignIn={signIn} onGuest={() => { setAuthError(''); setAccess({ mode: 'guest' }); }} onRecoverPassword={recover} error={authError} />
+      ) : (
+        <AppContent identityLabel={access.mode === 'guest' ? 'Guest explorer' : (access.user?.email ?? 'Signed-in user')} onSignOut={signOut} />
+      )}
     </ThemeProvider>
   );
 }

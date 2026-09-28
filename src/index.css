@@ -1,4 +1,28 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap');
+
+:root { font-family: 'Manrope', sans-serif; }
+.font-serif { font-family: 'Instrument Serif', serif; }
+.font-mono { font-family: 'DM Mono', monospace; }
+
+.auth-shell { position: relative; overflow: hidden; background: radial-gradient(circle at 78% 34%, #14274a 0, #0b1425 29%, transparent 55%), #080d17; }
+.auth-grid { position: absolute; inset: 0; opacity: .15; background-image: linear-gradient(rgba(125,159,214,.13) 1px, transparent 1px), linear-gradient(90deg, rgba(125,159,214,.13) 1px, transparent 1px); background-size: 54px 54px; mask-image: linear-gradient(to right, black, transparent 75%); }
+.auth-grid::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, #080d17 10%, transparent 45%, #080d17 95%); }
+.auth-orbit { position: absolute; border: 1px solid rgba(113,157,224,.12); border-radius: 999px; transform: rotate(-22deg); }
+.auth-orbit-one { width: 720px; height: 320px; right: -190px; top: 18%; }
+.auth-orbit-two { width: 510px; height: 230px; right: -60px; top: 29%; }
+.auth-accent-text { color: #9fc4ff; text-shadow: 0 8px 40px rgba(92,144,226,.2); }
+.auth-card { background: linear-gradient(155deg, rgba(24,34,52,.92), rgba(11,17,29,.88)); backdrop-filter: blur(20px); }
+.auth-input { border: 1px solid rgba(100,116,139,.45); background: rgba(5,10,18,.55); color: #f1f5f9; transition: border-color .2s, box-shadow .2s, background .2s; }
+.auth-input::placeholder { color: #526078; }
+.auth-input:focus { border-color: rgba(116,164,239,.85); background: rgba(8,15,26,.82); box-shadow: 0 0 0 3px rgba(77,130,211,.13); }
+.auth-primary { background: linear-gradient(135deg, #3d78d1, #285aab); box-shadow: 0 12px 30px rgba(30,87,174,.22); transition: transform .2s, filter .2s; }
+.auth-primary:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.auth-primary:active { transform: translateY(1px); }
+.auth-reveal { animation: auth-reveal .75s cubic-bezier(.2,.75,.2,1) both; }
+.auth-reveal-delay { animation-delay: .12s; }
+@keyframes auth-reveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .auth-reveal { animation: none; } .auth-primary, .auth-guest * { transition: none !important; } }
 
 @layer base {
   html.light {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserRole } from '../types';
-import { Shield, Sparkles, Sun, Moon } from 'lucide-react';
+import { LogOut, Shield, Sparkles, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 interface NavbarProps {
@@ -9,6 +9,8 @@ interface NavbarProps {
   setUserRole: (role: UserRole) => void;
   geminiConfigured: boolean;
   onOpenAnalyst: () => void;
+  identityLabel: string;
+  onSignOut: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -16,7 +18,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   userRole,
   setUserRole,
   geminiConfigured,
-  onOpenAnalyst
+  onOpenAnalyst,
+  identityLabel,
+  onSignOut
 }) => {
   const { isDark, toggleTheme } = useTheme();
 
@@ -57,6 +61,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Right Controls */}
       <div className="flex items-center space-x-2.5">
+        <div className="hidden xl:block text-right mr-1">
+          <p className={`text-[10px] uppercase tracking-wider ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Session</p>
+          <p className={`max-w-36 truncate text-xs font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{identityLabel}</p>
+        </div>
         {/* Light / Dark Mode Toggle */}
         <button
           onClick={toggleTheme}
@@ -130,8 +138,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>AI Analyst</span>
           </button>
         )}
+        <button onClick={onSignOut} className={`p-2 rounded-lg border transition-all ${isDark ? 'bg-[#141926] border-[#232d43] text-slate-400 hover:text-white' : 'bg-white border-slate-200 text-slate-500 hover:text-slate-900'}`} title="Return to sign in" aria-label="Sign out">
+          <LogOut className="w-4 h-4" />
+        </button>
       </div>
     </header>
   );
 };
-

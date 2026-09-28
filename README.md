@@ -1,52 +1,141 @@
 # DataOrbit
 
-DataOrbit is an AI-powered data intelligence platform for exploring databases, CSVs, API-backed data sources, and document knowledge through a unified workspace. It combines a modern React frontend with an Express API layer and Gemini-powered analysis workflows to help users ask questions, investigate datasets, and generate visual insights faster.
+DataOrbit is an AI-powered data intelligence platform for exploring databases, CSV files, API-backed data sources, and document knowledge through a unified workspace.
 
-## Overview
+[Live Demo](https://dataorbitt.netlify.app) · [GitHub Repository](https://github.com/Suyash-Codes-AI/DataOrbit)
 
-DataOrbit is designed for teams that need a single interface for:
+## What DataOrbit Does
 
-- querying and understanding database schemas
-- exploring CSV and structured data files
-- working with document-based knowledge
-- asking natural-language questions over connected data sources
-- visualizing insights and tracking prior queries
+DataOrbit helps analysts and teams turn connected data into understandable insights without switching between multiple tools. Users can inspect data sources, ask questions in natural language, generate visualizations, and preserve useful queries for later use.
 
-The application includes a dashboard, analyst workflow, database explorer, visualization studio, document center, query history, and settings area.
+The platform supports:
 
-## Key Features
+- Database schema and metadata exploration
+- CSV upload, parsing, and analysis
+- Document and knowledge-base exploration
+- Natural-language questions over connected data
+- AI-assisted insights through Google Gemini
+- Charts and visual analysis
+- Saved queries and query history
+- Dashboard monitoring for data health and activity
+- Role-aware analyst and administrator experiences
 
-- AI-assisted analyst workflow for natural-language questions
-- Dashboard for system health, database stats, and recent activity
-- Database explorer for schema and metadata inspection
-- CSV intelligence workflow for uploaded and parsed datasets
-- Visualization studio for chart-driven analysis
-- Document center for knowledge-backed exploration
-- Saved queries and historical query tracking
-- Role-aware user experience with analyst/admin-style states
-- Gemini integration for AI-powered insights
+## User Flow
+
+The following flow describes the primary journey through DataOrbit:
+
+```text
++------------------+
+| Open DataOrbit   |
++--------+---------+
+         |
+         v
++------------------+
+| View Dashboard   |
+| Stats and health |
++--------+---------+
+         |
+         v
++-------------------------------+
+| Select or connect a data source|
++---------------+---------------+
+                |
+       +--------+--------+----------------+
+       |                 |                |
+       v                 v                v
++-------------+   +-------------+  +-------------+
+| Database    |   | CSV file    |  | Documents   |
+| Explorer    |   | Upload      |  | and RAG     |
++------+------+   +------+------+  +------+------+ 
+       |                 |                |
+       +-----------------+----------------+
+                         |
+                         v
+              +----------------------+
+              | Analyst Workspace    |
+              | Ask a natural-language|
+              | question              |
+              +----------+-----------+
+                         |
+                         v
+              +----------------------+
+              | Gemini analysis and  |
+              | deterministic data   |
+              | processing            |
+              +----------+-----------+
+                         |
+             +-----------+------------+
+             |                        |
+             v                        v
+     +---------------+        +---------------+
+     | AI insights   |        | Visualizations|
+     | and answers   |        | and charts    |
+     +-------+-------+        +-------+-------+
+             |                        |
+             +-----------+------------+
+                         |
+                         v
+              +----------------------+
+              | Save query, review   |
+              | history, and share   |
+              | findings              |
+              +----------------------+
+```
+
+## How the Application Works
+
+1. A user opens the dashboard and reviews system status, data statistics, and recent activity.
+2. The user selects a database, uploads a CSV file, or accesses document knowledge.
+3. DataOrbit prepares the source using its database, CSV, deterministic processing, or retrieval services.
+4. The user asks a question from the analyst workspace using natural language.
+5. The backend combines application logic, relevant data, and Gemini capabilities to produce an answer.
+6. The result can be reviewed as text, explored through visualizations, and saved in query history.
 
 ## Architecture
 
-DataOrbit is composed of:
-
-- Frontend: React + Vite + TypeScript
-- UI styling: Tailwind CSS
-- Backend: Express + TypeScript
-- AI layer: Google Gemini via `@google/genai`
-- Data access: database and CSV utilities, plus document-related services
-- Storage: PostgreSQL-compatible data access combined with local app state
+```text
++--------------------------------------------------+
+| React Frontend                                   |
+| Vite, TypeScript, Tailwind CSS                   |
+| Dashboard | Analyst | Database | CSV | Documents |
++-------------------------+------------------------+
+                          | HTTP / API
+                          v
++--------------------------------------------------+
+| Express Backend                                  |
+| Routes | Security | Deterministic Processing     |
+| Database Access | Agent Workflows | RAG Services |
++----------------------+---------------------------+
+                       |
+          +------------+-------------+
+          |                          |
+          v                          v
++------------------+          +------------------+
+| PostgreSQL or    |          | Google Gemini   |
+| PGLite data      |          | AI integration  |
+| storage          |          | and insights    |
++------------------+          +--------+---------+
+                                        |
+                                        v
+                              +------------------+
+                              | Retrieval and   |
+                              | agent workflows |
+                              +------------------+
+```
 
 ## Tech Stack
 
-- React 19
-- Vite
-- TypeScript
-- Express
-- Tailwind CSS
-- Google Gemini API
-- Papa Parse for CSV processing
-- PGLite support via `@electric-sql/pglite`
+| Layer | Technology | Purpose |
+| --- | --- | --- |
+| Frontend | React 19 | Component-based user interface |
+| Build tool | Vite | Development server and production builds |
+| Language | TypeScript | Type-safe application and server code |
+| Styling | Tailwind CSS | Responsive interface styling |
+| Backend | Express | API routes and server-side application logic |
+| AI | Google Gemini through `@google/genai` | Natural-language analysis and insights |
+| CSV processing | Papa Parse | Parsing and processing CSV datasets |
+| Database support | PostgreSQL-compatible access and PGLite | Persistent and local data operations |
+| Runtime | Node.js 18+ or Bun | Local development and production execution |
 
 ## Project Structure
 
@@ -54,44 +143,40 @@ DataOrbit is composed of:
 DataOrbit/
 ├── src/                  # Frontend React application
 │   ├── components/       # Reusable UI components
-│   ├── context/          # Theme and app state context
+│   ├── context/          # Theme and application state
 │   ├── types/            # Shared TypeScript types
 │   ├── views/            # Feature pages and screens
-│   ├── App.tsx           # Main app router and screen state
+│   ├── App.tsx           # Main application orchestration
 │   ├── index.css         # Global styles
-│   └── main.tsx          # App entry point
+│   └── main.tsx          # Frontend entry point
 ├── server/               # Backend services and logic
 │   ├── agent/            # Agentic workflows
 │   ├── db/               # Database access logic
-│   ├── deterministic/    # Deterministic processing / logic
-│   ├── gemini/           # Gemini integrations
-│   ├── rag/              # Retrieval and knowledge flow
+│   ├── deterministic/    # Deterministic processing
+│   ├── gemini/           # Gemini integration
+│   ├── rag/              # Retrieval and knowledge flows
 │   ├── routes/           # API route definitions
-│   ├── security/         # Security-related logic
-│   └── ...
+│   └── security/         # Security-related logic
 ├── .env.example          # Environment variable template
 ├── index.html            # Vite HTML entry
-├── metadata.json         # App metadata
+├── metadata.json         # Application metadata
 ├── package.json          # Scripts and dependencies
 ├── server.ts             # Express entry point
-├── tsconfig.json         # TypeScript config
+├── tsconfig.json         # TypeScript configuration
 ├── vite.config.ts        # Vite configuration
 ├── bun.lock              # Bun lockfile
-├── README.md             # Project documentation
-└── ...
+└── README.md             # Project documentation
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-Make sure you have the following installed:
+- Node.js 18+ or Bun
+- npm or Bun package manager
+- A valid Google Gemini API key
 
-- Node.js 18+
-- npm or Bun
-- A valid Gemini API key
-
-### 1) Install dependencies
+### Install dependencies
 
 Using npm:
 
@@ -105,7 +190,7 @@ Using Bun:
 bun install
 ```
 
-### 2) Configure environment variables
+### Configure environment variables
 
 Copy the example environment file:
 
@@ -113,116 +198,107 @@ Copy the example environment file:
 cp .env.example .env
 ```
 
-Then update the values in `.env`:
+Update the values in `.env`:
 
 | Variable | Required | Description |
 | --- | --- | --- |
-| `GEMINI_API_KEY` | Yes | API key used for Gemini-powered analysis |
-| `GEMINI_MODEL` | Optional | Gemini model name, defaults to `gemini-3.8-flash` |
-| `APP_URL` | Recommended | Public app URL used for callbacks and self-referential links |
+| `GEMINI_API_KEY` | Yes | API key for Gemini-powered analysis |
+| `GEMINI_MODEL` | Optional | Gemini model name configured by the application |
+| `APP_URL` | Recommended | Public application URL, such as `https://dataorbitt.netlify.app` |
 | `PORT` | Optional | Server port for local production mode |
 
-### 3) Run the app in development mode
+### Run the application
+
+Development mode:
 
 ```bash
 npm run dev
 ```
 
-This starts the Vite dev server and serves the app on port `3000`.
-
-### 4) Build for production
+Build for production:
 
 ```bash
 npm run build
 ```
 
-### 5) Start the production server
+Start the production server:
 
 ```bash
 npm run start
 ```
 
-This runs the Express server and serves the built frontend from the `dist` directory.
-
 ## Available Scripts
 
 ```bash
-npm run dev      # Start the frontend dev server on port 3000
-npm run build    # Build the app for production
+npm run dev      # Start the development server
+npm run build    # Build the application for production
 npm run preview  # Preview the production build locally
-npm run start    # Start the Express server
-npm run lint     # Run TypeScript type checks
+npm run start    # Start the Express production server
+npm run lint     # Run TypeScript checks
 npm run clean    # Remove build outputs
 ```
 
 ## Typical Usage
 
-1. Launch the app.
+1. Launch DataOrbit.
 2. Configure Gemini access.
-3. Connect or inspect a database source.
-4. Upload or reference a CSV dataset.
-5. Ask a natural-language query in the analyst view.
-6. Explore charts and saved query history.
-7. Use the dashboard to monitor data health and activity.
-
-## Notes on Configuration
-
-This project expects a working Gemini configuration for the AI-powered analytical experience. If the model is not configured correctly, AI-driven features may not function as expected.
+3. Connect to a database, upload a CSV file, or open document knowledge.
+4. Ask a natural-language question from the analyst view.
+5. Review the answer and generated insights.
+6. Create or inspect visualizations.
+7. Save useful queries and revisit query history.
+8. Use the dashboard to monitor data activity and health.
 
 ## Troubleshooting
 
-### Gemini not configured
+### Gemini is not configured
 
-- Check that `GEMINI_API_KEY` is set correctly in your environment file.
-- Verify the model name in `GEMINI_MODEL`.
-- Ensure your API key has the necessary permissions.
+- Confirm that `GEMINI_API_KEY` exists in `.env`.
+- Verify that the configured model is available for the API key.
+- Restart the development server after changing environment variables.
 
-### Project build issues
-
-- Reinstall dependencies:
+### Build issues
 
 ```bash
 rm -rf node_modules package-lock.json
 npm install
-```
-
-- Run type checks:
-
-```bash
 npm run lint
+npm run build
 ```
 
-### Local server not starting
+### Server does not start
 
-- Confirm ports are available.
-- Check the `.env` values.
-- Verify there are no missing runtime dependencies.
+- Confirm that the configured port is available.
+- Check that `.env` exists and is valid.
+- Verify that all dependencies are installed.
+- Review the server output for missing runtime configuration.
 
 ## Roadmap
 
-Potential enhancements for future iterations include:
+Potential future improvements include:
 
-- stronger authentication and user management
-- expanded connectors for more database systems
-- richer export and sharing features
-- more advanced charting and analytical workflows
-- improved document ingestion and retrieval accuracy
-- production deployment templates
+- Stronger authentication and user management
+- Role-based access control
+- Additional database and API connectors
+- Advanced export and sharing features
+- More charting and analytical workflows
+- Improved document ingestion and retrieval accuracy
+- Production deployment templates
 
 ## License
 
-This repository does not currently include a license file. If you plan to distribute or publish the project publicly, add a license before release.
+This repository does not currently include a license file. Add an appropriate license before distributing the project publicly.
 
 ## Contributing
 
-Contributions are welcome. A typical workflow is:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run validation checks
-5. Submit a pull request with a clear description
+1. Fork the repository.
+2. Create a feature branch.
+3. Make your changes with clear commit messages.
+4. Run `npm run lint` and `npm run build`.
+5. Open a pull request with a detailed description.
 
 ## Summary
 
-DataOrbit is a full-stack AI data intelligence workspace built to bring together data exploration, business analysis, visualization, and Gemini-powered decision support in one application.
+DataOrbit combines data exploration, AI-assisted analysis, visualization, document retrieval, and query history in one workspace. It is built with React, Vite, TypeScript, Express, Tailwind CSS, Google Gemini, Papa Parse, PostgreSQL-compatible data access, and PGLite.
+
+Visit the live application at [dataorbitt.netlify.app](https://dataorbitt.netlify.app).

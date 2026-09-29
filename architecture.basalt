@@ -1,0 +1,65 @@
+// @lens: sde
+title: DataOrbit Intelligence Workspace
+summary: AI-assisted data exploration platform
+
+zone "Frontend (src)" [color: blue] {
+  Browser Client (inferred) [icon: users]
+  React Application [icon: react]
+  Reusable UI Components [icon: react]
+  Application Context [icon: react]
+  Shared Type Definitions [icon: typescript]
+  Workspace Views [icon: react]
+}
+zone "Backend (server)" [color: purple] {
+  Firewall [icon: firewall]
+  Express Application Server [icon: express]
+  API Route Handlers [icon: express]
+  Security Logic [icon: lock]
+  Agent Workflows [icon: server]
+  Deterministic Processing [icon: server]
+  Gemini Integration [icon: gemini]
+  Retrieval and Knowledge Flows [icon: server]
+  Database Repository [icon: database]
+  Netlify Function Handler [icon: server]
+}
+zone "Data" [color: green] {
+  PGLite Data Store [icon: database]
+  CSV Dataset Parser [icon: server]
+}
+zone "External Integrations" [color: yellow] {
+  Gemini AI API [icon: gemini]
+  Identity Provider [icon: active-directory]
+}
+zone "Platform & DevOps" [color: orange] {
+  Source Repository [icon: github]
+  Vite Build Tool [icon: vite]
+  Static Web Host [icon: server]
+}
+
+React Application > Reusable UI Components [conduit: in-process]
+React Application > Application Context [conduit: in-process]
+React Application > Shared Type Definitions [conduit: in-process]
+React Application > Workspace Views [conduit: in-process]
+Workspace Views > CSV Dataset Parser [conduit: in-process]
+React Application > Identity Provider [conduit: HTTPS]
+React Application > Firewall [conduit: REST/HTTP]
+Firewall > Express Application Server [conduit: REST/HTTP]
+Static Web Host > React Application [conduit: static assets]
+Static Web Host > Netlify Function Handler [conduit: HTTP]
+Netlify Function Handler > API Route Handlers [conduit: HTTP]
+Express Application Server > API Route Handlers [conduit: in-process]
+API Route Handlers > Security Logic [conduit: in-process]
+API Route Handlers > Agent Workflows [conduit: in-process]
+API Route Handlers > Database Repository [conduit: in-process]
+API Route Handlers > CSV Dataset Parser [conduit: in-process]
+Agent Workflows > Security Logic [conduit: in-process]
+Agent Workflows > Deterministic Processing [conduit: in-process]
+Agent Workflows > Retrieval and Knowledge Flows [conduit: in-process]
+Agent Workflows > Gemini Integration [conduit: in-process]
+Agent Workflows > Database Repository [conduit: in-process]
+Retrieval and Knowledge Flows > Database Repository [conduit: in-process]
+Gemini Integration > Gemini AI API [conduit: HTTPS]
+Database Repository > PGLite Data Store [conduit: SQL]
+CSV Dataset Parser > Deterministic Processing [conduit: in-process]
+Source Repository > Vite Build Tool [conduit: build]
+Vite Build Tool > Static Web Host [conduit: publish]
